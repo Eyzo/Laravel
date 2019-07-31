@@ -1,6 +1,10 @@
-@extends('layout')
+@extends('theme/layoutAdmin')
 
 @section('content')
+
+
+    @include('form/error',['errors' => $errors])
+
 
     {!! Form::open(['method' => 'PUT','route' => ['news.update', $post->id]]) !!}
     <!-- 'action' => route('news.update',['news' => $post]) -->

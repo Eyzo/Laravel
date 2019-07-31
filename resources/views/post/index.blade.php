@@ -1,11 +1,13 @@
-@extends('layout')
+@extends('theme/layoutAdmin')
 
 
 @section('content')
 
+    @include('form/success')
+
     <a class="btn btn-success" href="{{ route('news.create') }}">Ajouter un article</a>
 
-    <table class="table table-striped">
+    <table class="table">
         <thead>
         <tr>
             <th>Id</th>

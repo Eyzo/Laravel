@@ -21,6 +21,9 @@ Route::get('/test2',function (\App\ServiceContainerTest\TonyInterface $tony) {
    dd($tony->test('je suis un test'));
 });
 
+Route::get('my-home', 'AdminController@myHome');
+
+Route::get('my-users','AdminController@myUsers');
 
 Route::group(['prefix' => 'links'],function () {
 

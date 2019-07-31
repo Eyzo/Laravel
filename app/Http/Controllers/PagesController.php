@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Posts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PagesController extends Controller
 {
 
 
     public function index() {
+
         $posts = Posts::visible()->whereRaw('created_at < NOW()')->get()->toArray();
 
         $posts = array_chunk($posts,4);

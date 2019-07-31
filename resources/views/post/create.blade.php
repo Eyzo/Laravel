@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('theme/layoutAdmin')
 
 @section('content')
 

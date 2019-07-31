@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\PostRequest;
 use App\Posts;
 use App\Tags;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -67,7 +70,7 @@ class PostController extends Controller
     }
 
     //Fonction se chargeant de mettre a jour les données
-    public function update($id) {
+    public function update($id, PostRequest $request) {
 
         $title = Input::get('title');
         $slug = Input::get('slug');
@@ -79,6 +82,7 @@ class PostController extends Controller
         $category = Category::find($category);
 
         $post = Posts::findOrFail($id);
+
         $post->title = $title;
         $post->slug = $slug;
         $post->content = $content;
@@ -87,8 +91,9 @@ class PostController extends Controller
         $post->tags()->sync($tags);
         $post->save();
 
-        return redirect(route('news.index'),301);
+        Session::flash('success',"l'update à bien était effectué");
 
+        return redirect(route('news.index'),301);
     }
 
     //Controller permettant de voir les informations d'un seul element
