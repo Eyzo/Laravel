@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Category;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
 use App\Posts;
 use App\Tags;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
 
     //Controller de la page principale qui s'occupe de lister tous les articles
     public function index() {

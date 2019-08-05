@@ -1,6 +1,10 @@
 @extends('layout')
 
 @section('content')
+
+    @include('form/error')
+    @include('form/success')
+
     @foreach($posts as $row)
     <div class="card-deck">
         @foreach($row as $post)

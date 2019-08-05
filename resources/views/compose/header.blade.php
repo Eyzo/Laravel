@@ -10,6 +10,14 @@
                     <h4 class="text-white">Contact</h4>
                     <ul class="list-unstyled">
                         <li><a href="{{ route('news.index') }}" class="text-white">Edition</a></li>
+
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <li><a href="{{ route('logout') }}" class="text-white">Deconnexion</a></li>
+                            <li><a href="{{ route('password.reset.get') }}" class="text-white">Demande de changement de mot de passe</a></li>
+                        @else
+                            <li><a href="{{ route('login') }}" class="text-white">Connexion</a></li>
+                        @endif
+
                     </ul>
                 </div>
             </div>

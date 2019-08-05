@@ -11,30 +11,8 @@
 |
 */
 
-Route::get('/test',function (\App\TestInterface $test){
+require_once(__DIR__.'/home/route.php');
 
-   dd(Test::parler('bonjour'));
+require_once(__DIR__.'/auth/routes.php');
 
-});
-
-Route::get('/test2',function (\App\ServiceContainerTest\TonyInterface $tony) {
-   dd($tony->test('je suis un test'));
-});
-
-Route::get('my-home', 'AdminController@myHome');
-
-Route::get('my-users','AdminController@myUsers');
-
-Route::group(['prefix' => 'links'],function () {
-
-    Route::get('create','LinkController@create');
-    Route::post('create','LinkController@store');
-    Route::get('{id}','LinkController@show')->where('id','[0-9]+')->name('link.show.unique');
-
-});
-
-Route::resource('news','PostController');
-
-Route::get('/','PagesController@index')->name('home');
-
-Route::get('{id}','PagesController@singleView')->name('single.view');
+require_once(__DIR__.'/admin/posts/route.php');
