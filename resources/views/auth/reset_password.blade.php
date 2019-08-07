@@ -45,14 +45,10 @@
     @csrf
 
     <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Forgot Password</h1>
-
-    <div class="form-group">
-        <label for="inputEmail" class="sr-only">Adresse Email</label>
-        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
-    </div>
+    <h1 class="h3 mb-3 font-weight-normal">Demande de nouveau mot de pass</h1>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Demande</button>
 </form>
+
 </body>
 </html>

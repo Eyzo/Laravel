@@ -1,7 +1,5 @@
 @if(Session::has('success'))
-<div class="alert alert-success">
-    <ul>
-        <li>{{ Session::get('success') }}</li>
-    </ul>
+<div class="alert alert-success" style="display: block;width: 100%">
+        <p>{{ Session::get('success') }}</p>
 </div>
 @endif

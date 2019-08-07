@@ -11,8 +11,8 @@
 |
 */
 
-require_once(__DIR__.'/home/route.php');
-
 require_once(__DIR__.'/auth/routes.php');
+
+require_once(__DIR__.'/home/route.php');
 
 require_once(__DIR__.'/admin/posts/route.php');

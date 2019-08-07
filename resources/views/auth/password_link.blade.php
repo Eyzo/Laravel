@@ -37,22 +37,36 @@
 </head>
 <body class="text-center">
 
-@include('form/error')
-@include('form/success')
-
-<form class="form-signin" method="post" action="{{ route('password.forget.post') }}">
-
-    @csrf
-
-    <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Forgot Password</h1>
-
-    <div class="form-group">
-        <label for="inputEmail" class="sr-only">Adresse Email</label>
-        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
+@if($errors->any())
+    <div style="width: 80%;margin: auto">
+        @include('form/error')
+        @include('form/success')
+        <h1 style="text-align: center">Erreur le token est incorrect</h1>
     </div>
+@else
+    @include('form/error')
+    @include('form/success')
+    <form class="form-signin" method="post" action="{{ route('password.link.reset.post',[ 'token' => $token ]) }}">
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Demande</button>
-</form>
+        @csrf
+
+        <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Changement de mot de passe</h1>
+
+
+        <div class="form-group">
+            <label for="new-password" class="sr-only">Nouveau mot de passe</label>
+            <input type="password" id="new-password" class="form-control" name="password" placeholder="Mot de passe" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="repeat-password" class="sr-only">Répéter nouveau mot de passe</label>
+            <input type="password" id="repeat-password" class="form-control" name="password-repeat" placeholder="Répeter le mot de passe" required autofocus>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Enregistrer</button>
+    </form>
+@endif
+
 </body>
 </html>

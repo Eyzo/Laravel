@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
@@ -37,7 +41,7 @@ class ResetPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
     }
 
     public function resetPassword() {
@@ -47,30 +51,68 @@ class ResetPasswordController extends Controller
 
     public function resetPasswordValidate(Request $request) {
 
-        $this->validate($request,['email' => 'required|email']);
-
-        $user = User::where(['email' => Input::get('email')])->first();
+        $user = Auth::user();
 
         if ($user) {
 
-            $response = $this->sendResetLinkEmail($request);
+            //generation d'un token
+            $token = Str::uuid();
 
-            dd($response);
+            //on perisste le token
+            $user->reset_token = $token;
+            $user->save();
 
-            return redirect(route('password.reset.get',[
-                'success' => $response
-            ]));
+            //on envoie le mail
+            Mail::send('email.password',['username' => $user->name, 'link' => route("password.link.reset.get",['token' => $token])],function ($message) use ($user) {
+                $message->to($user->email)->subject('Email de reénitialisation');
+            });
+
+            return redirect(route('password.reset.get'))->with('success','Email de reset bien envoyer');
         }
     }
 
-    public function sendResetLinkEmail() {
+    public function sendResetLinkEmail($token) {
 
-        return view('auth/password_link');
+        $error['status'] = false;
+        $user = User::where(['reset_token' => $token])->first();
 
+        if (!$user) {
+            $error['status'] = true;
+            $error['message'] = 'Le token est incorrect';
+        }
+
+        if ($error['status']) {
+            return view('auth/password_link')->withErrors("Le token est incorrect");
+        } else {
+            return view('auth/password_link',['token' => $token]);
+        }
     }
 
-    public function sendResetLinkEmailValidate() {
+    public function sendResetLinkEmailValidate($token) {
 
+        $user = User::where(['reset_token' => $token])->first();
 
+        $password = Input::get('password');
+        $passwordRepeat = Input::get('password-repeat');
+
+        $response['status'] = null;
+
+        if ($password != $passwordRepeat) {
+            $response['status'] = 'errors';
+            $response['message'] = "le mot de passe doit être identique au champ répéter le mot de passe";
+        } else if (!$user) {
+            $response['status'] = 'errors';
+            $response['message'] = "le token est incorrect";
+        } else {
+
+            $user->reset_token = null;
+            $user->password = Hash::make($password);
+            $user->save();
+
+            $response['status'] = 'success';
+            $response['message'] = "le mot de passe a bien était modifier";
+        }
+
+        return redirect(route('home'))->with($response['status'],$response['message']);
     }
 }
